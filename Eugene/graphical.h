@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 
+void divider(char* typeD2, char* typeD3, int type);
+void drawGraph(float* values, int numvalues);
+void drawTable(char* typeD1, char* typeD2, char* typeD3, char* typeC1, char* typeC2, float* valueD1, float* valueD2,
+	float* valueD3, float* valueC1, float* valueC2, int numvalues, float SDC1, float SDC2, float meanC1, float meanC2);
+void graphical(int type, float* valueD1, float* valueD2, float* valueD3, float* valueC1, float* valueC2,
+	int numvalues, float SDC1, float SDC2, float meanC1, float meanC2);
+
+
 //default: "-"; 1: "_", 2: "=", 3: " " 
 void divider(char* typeD2, char* typeD3, int type)
 {
@@ -41,37 +49,14 @@ void divider(char* typeD2, char* typeD3, int type)
 	}
 }
 
-
-
-void drawGraph(int scale, int type, int C)
+void drawGraph(float *values, int numvalues)
 {
-
-	/*
-	//Actual values
-	LinkedListEx extractedC = extract(&mainlist, type, C);
-	*/
-
-
-	//Simulated values of C1, C2
-
-	int numvalues = 20;
-	//float values[] = { 10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200 };
-	float values[] = { 1.5, 1.7, 1.9, 2.5, 2.1, 4.5, 4.1, 5.4, 6.8, 5.9, 9.9, 8.8, 7.7, 6.6, 5.5, 4.4, 3.3, 2.2, 1.1, 1.2 };
-
-
+	int scale = 10;
 	int i, j;
 	int maxval;
 	int maxcount = 0;
 	int maxwidth = 180; // CHANGE THIS ACCORDING TO SCREEN SIZE or preference. Max 180 (for 1980x1080 res)
 
-	if (C == 4) //C1
-	{
-		for (i = 0; i < numvalues; i++)
-		{
-			//values[i] = 10;
-			values[i] = 10 + i * 10;
-		}
-	}
 
 	for (i = 0; i < numvalues; i++)
 	{
@@ -125,7 +110,7 @@ void drawGraph(int scale, int type, int C)
 
 		for (j = 0; j < frequency[i]; j++)
 		{
-			printf("%s",spacer);
+			printf("%s", spacer);
 		}
 
 		printf("\n");
@@ -135,40 +120,18 @@ void drawGraph(int scale, int type, int C)
 		{
 			printf("%s", spacer);
 		}
-		
+
 		if (frequency[i]) printf("|");
 		printf("\n");
 		if (freqsize - i - 1) printf("                 |\n");
-	
+
 	}
 
 }
 
-
-void drawTable(char* typeD1, char* typeD2, char* typeD3, char* typeC1, char* typeC2)
+void drawTable(char* typeD1, char* typeD2, char* typeD3, char* typeC1, char* typeC2, float *valueD1, float* valueD2, 
+	float* valueD3, float* valueC1, float* valueC2, int numvalues, float SDC1, float SDC2, float meanC1, float meanC2)
 {
-	/*
-	//Actual values
-	LinkedListEx extractedD1 = extract(&mainlist, type, 1);
-	if (typeD2[0]) LinkedListEx extractedD2 = extract(&mainlist, type, 2);
-	if (typeD3[0]) LinkedListEx extractedD3 = extract(&mainlist, type, 3);
-	LinkedListEx extractedC1 = extract(&mainlist, type, 4);
-	LinkedListEx extractedC2 = extract(&mainlist, type, 5);
-	extract mean and SD also
-	*/
-	//Simulated values
-	float valueD1[] = { 10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200 };
-	float valueD2[] = { 1.5, 1.7, 1.9, 2.5, 2.1, 4.5, 4.1, 5.4, 6.8, 5.9, 9.9, 8.8, 7.7, 6.6, 5.5, 4.4, 3.3, 2.2, 1.1, 1.2 };
-	float valueD3[] = { 1.5, 1.7, 1.9, 2.5, 2.1, 4.5, 4.1, 5.4, 6.8, 5.9, 9.9, 8.8, 7.7, 6.6, 5.5, 4.4, 3.3, 2.2, 1.1, 1.2 };
-	float valueC1[] = { 1.5, 1.7, 1.9, 2.5, 2.1, 4.5, 4.1, 5.4, 6.8, 5.9, 9.9, 8.8, 7.7, 6.6, 5.5, 4.4, 3.3, 2.2, 1.1, 1.2 };
-	float valueC2[] = { 10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200 };
-	float meanC1 = 123;
-	float SDC1 = 321;
-	float meanC2 = 123;
-	float SDC2 = 321;
-	int numvalues = 20;
-
-
 	//Header
 
 	divider(typeD2, typeD3, 1);
@@ -212,41 +175,11 @@ void drawTable(char* typeD1, char* typeD2, char* typeD3, char* typeC1, char* typ
 	//END
 	divider(typeD2, typeD3, 3);
 
-	
-	/*
-	//Header
-
-	divider(typeD2, typeD3, 1);
-
-	printf("|%7s |", typeD1);
-	if (typeD2[0]) printf("%7s |", typeD2);
-	if (typeD3[0]) printf("%7s |", typeD3);
-	printf("%13s |", typeC1);
-	printf("%7s |\n", typeC2);
-	
-	divider(typeD2, typeD3, 2);
-	
-	//Body
-
-	for (int i = 0; i < numvalues; i++)
-	{
-		printf("|%7.2f |", valueD1[i]);
-		if (typeD2[0]) printf("%7.2f |", valueD2[i]);
-		if (typeD3[0]) printf("%7.2f |", valueD3[i]);
-		printf("%13.2f |", valueC1[i]);
-		printf("%7.2f |\n", valueC2[i]);
-
-		divider(typeD2, typeD3, 0);
-	}
-	
-	//Mean, SD, end
-	divider(typeD2, typeD3, 3);
-
-	*/
-	
 }
 
-void graphical(int type, int scaleC1, int scaleC2)
+void graphical(int type, float* valueD1, float* valueD2, float* valueD3, float* valueC1, float* valueC2, 
+	int numvalues, float SDC1, float SDC2, float meanC1, float meanC2)
+
 {
 	char c1_2D[] = "Perimeter";
 	char c2_2D[] = "Area";
@@ -255,18 +188,18 @@ void graphical(int type, int scaleC1, int scaleC2)
 	char typeC1[13];
 	char typeC2[7];
 
-	char length[]	= "Length";
-	char width[]	= "Width";
-	char height[]	= "Height";
-	char base[]		= "Base";
-	char radius[]	= "Radius";
-	
+	char length[] = "Length";
+	char width[] = "Width";
+	char height[] = "Height";
+	char base[] = "Base";
+	char radius[] = "Radius";
+
 	char typeD1[7] = "";
 	char typeD2[7] = "";
 	char typeD3[7] = "";
-	
 
-	
+
+
 	switch (type)
 	{
 	case 11: //2D rectangle
@@ -325,8 +258,8 @@ void graphical(int type, int scaleC1, int scaleC2)
 		break;
 
 	}
-	
-	
+
+
 	if (type % 10 == 1)
 	{
 		// 2D
@@ -340,7 +273,7 @@ void graphical(int type, int scaleC1, int scaleC2)
 		strcpy(typeC1, c1_3D);
 		strcpy(typeC2, c2_3D);
 	}
-	
+
 
 
 	printf("\n==============\n");
@@ -349,18 +282,18 @@ void graphical(int type, int scaleC1, int scaleC2)
 
 
 	printf("%s:\n", typeC1);
-	drawGraph(scaleC1, type, 4);
+	drawGraph(valueC1, numvalues);
 	printf("\n\n");
 
 
 	printf("%s:\n", typeC2);
-	drawGraph(scaleC2, type, 5);
+	drawGraph(valueC2, numvalues);
 	printf("\n\n");
 
 	printf("\n==============\n");
 	printf("     Table\n");
 	printf("==============\n");
 
-	drawTable(typeD1, typeD2, typeD3, typeC1, typeC2);
+	drawTable(typeD1, typeD2, typeD3, typeC1, typeC2, valueD1, valueD2, valueD3, valueC1, valueC2, numvalues, SDC1, SDC2, meanC1, meanC2);
 }
 
