@@ -147,19 +147,17 @@ int main(void)
 	printList(&mainlist);
 	
 	
-	LinkedListEx extractedlist2;
-	extractedlist2.head=NULL;
-	extractedlist2.tail=NULL;
-	extractedlist2.size=0;
 	
-	LinkedListEx extractedlist1;
-	extractedlist1.head=NULL;
-	extractedlist1.tail=NULL;
-	extractedlist1.size=0;
 	
 
-	display(11, &mainlist, &extractedlist1);
-	//display(21, &mainlist, &extractedlist2);
+	display(11, &mainlist, &extractedlist);
+
+	freememEx(&extractedlist);
+	extractedlist.head=NULL;
+	extractedlist.tail=NULL;
+	extractedlist.size=0;
+
+	display(21, &mainlist, &extractedlist);
 	
 	return 0;
 }
