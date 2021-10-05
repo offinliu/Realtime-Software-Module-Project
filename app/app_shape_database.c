@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
 
   while (MainMenu(&main_list, file_path));
 
-  if (FreeMem(&main_list) != 0) {
+  if (!FreeMem(&main_list)) {
     printf("Warning: memory free failed.\n");
   }
   return 1;
