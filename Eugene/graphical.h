@@ -53,7 +53,7 @@ void drawGraph(float *values, int numvalues)
 {
 	int scale = 10;
 	int i, j;
-	int maxval;
+	int maxval = 0;
 	int maxcount = 0;
 	int maxwidth = 180; // CHANGE THIS ACCORDING TO SCREEN SIZE or preference. Max 180 (for 1980x1080 res)
 
@@ -62,6 +62,7 @@ void drawGraph(float *values, int numvalues)
 	{
 		if ((int)values[i] > maxval) maxval = (int)values[i];
 	}
+	
 
 	int minval = maxval;
 
@@ -75,6 +76,7 @@ void drawGraph(float *values, int numvalues)
 	int freqsize = maxval - minval;
 	int step = freqsize / scale;
 	if (step < 1) step = 1;
+
 
 	freqsize = freqsize / step + 1;
 

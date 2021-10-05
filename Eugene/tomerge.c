@@ -8,6 +8,7 @@
 
 void copyList(float* value, int numvalues, float* tempList);
 void convertListEx(LinkedListEx* ll, int numvalues, float* tempList);
+void display(int shape);
 
 void main()
 {
