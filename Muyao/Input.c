@@ -3,7 +3,7 @@ MA4830 CA1 linklist template functions
 
 done by: Liu Muyao
 
-Last updated: 04/10/2021 1650
+Last updated: 
 */
 #include <stdio.h>
 #include <math.h>
