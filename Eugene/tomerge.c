@@ -8,43 +8,140 @@
 
 void copyList(float* value, int numvalues, float* tempList);
 void convertListEx(LinkedListEx* ll, int numvalues, float* tempList);
-void display(int shape);
+void display(int shape, LinkedList *ll, LinkedListEx *ex);
 
 void main()
 {
+	//example to call function
+	int t1, index, check;
+	float d1, d2, d3, c1, c2;
+	LinkedList mainlist;
+	LinkedListEx extractedlist;
+	mainlist.head= NULL;
+	mainlist.tail= NULL;
+	mainlist.size=0;
+	extractedlist.head=NULL;
+	extractedlist.tail=NULL;
+	extractedlist.size=0;
+	index = 0;
+	check = 0;
+	c1 = c2 = 10.1; // for testing purposes
+	//printf("Hello World!!\n");
+	//printf("Input t1 d1 d2 d3 in this order\nInput: ");
+	//scanf("%d %f %f %f", &t1, &d1, &d2, &d3);
+	//getchar(); //clear buffer
+
+	t1 = 11;
+	d1 = 1;
+	d2 = 2;
+	d3 = 3;
+	calculate(t1,d1,d2,d3,&c1,&c2);
+	check = insertNodeForMainLL(&mainlist, index, t1, d1, d2, d3, c1, c2);
+	if (check != 0)
+		perror("insert fail.");
+	//t1+=10;
+
+
+	// add data
+	if(1)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			d1++;
+			d2++;
+			d3++;
+			calculate(t1,d1,d2,d3,&c1,&c2);
+			check = insertNodeForMainLL(&mainlist, index, t1, d1, d2, d3, c1, c2);
+			if (check != 0)
+				perror("insert fail.");
+		}
+
+		for (int i = 0; i < 3; i++)
+		{
+			calculate(t1,d1,d2,d3,&c1,&c2);
+			check = insertNodeForMainLL(&mainlist, index, t1, d1, d2, d3, c1, c2);
+			if (check != 0)
+				perror("insert fail.");
+		}
+		
+		t1+=10;
+		for (int i = 0; i < 5; i++)
+		{
+			d1++;
+			d2++;
+			d3++;
+			calculate(t1,d1,d2,d3,&c1,&c2);
+			check = insertNodeForMainLL(&mainlist, index, t1, d1, d2, d3, c1, c2);
+			if (check != 0)
+				perror("insert fail.");
+		}
+
+
+		for (int i = 0; i < 3; i++)
+		{
+			calculate(t1,d1,d2,d3,&c1,&c2);
+			check = insertNodeForMainLL(&mainlist, index, t1, d1, d2, d3, c1, c2);
+			if (check != 0)
+				perror("insert fail.");
+		}
+	}
+
+	printList(&mainlist);
 	
+	
+	
+	
+
+	display(11, &mainlist, &extractedlist);
+
+	freememEx(&extractedlist);
+	extractedlist.head=NULL;
+	extractedlist.tail=NULL;
+	extractedlist.size=0;
+
+	display(21, &mainlist, &extractedlist);
+	
+	return 0;
 }
 
 
-void display(int shape)
+void display(int shape, LinkedList *ll, LinkedListEx *ex)
 {	
+	/*
+	LinkedListEx ex;
+	ex.head=NULL;
+	ex.tail=NULL;
+	ex.size=0;
+	*/
+	
 	//D1
-	extract(&mainlist, &extractedlist, shape, 1); 
-	int numvalues = extractedlist.size;
+	extract(ll, ex, shape, 1); 
+	int numvalues = ex -> size;
 	float tempList[numvalues];
 	float valueD1[numvalues], valueD2[numvalues], valueD3[numvalues], valueC1[numvalues], valueC2[numvalues];
 
-	convertListEx(&extractedlist, numvalues, tempList);
+	convertListEx(ex, numvalues, tempList);
 	copyList(valueD1, numvalues, tempList);
-
+	
+	
 	//D2
-	extract(&mainlist, &extractedlist, shape, 2);
-	convertListEx(&extractedlist, numvalues, tempList);
+	extract(ll, ex, shape, 2);
+	convertListEx(ex, numvalues, tempList);
 	copyList(valueD2, numvalues, tempList);
 
 	//D3
-	extract(&mainlist, &extractedlist, shape, 3);
-	convertListEx(&extractedlist, numvalues, tempList);
+	extract(ll, ex, shape, 3);
+	convertListEx(ex, numvalues, tempList);
 	copyList(valueD3, numvalues, tempList);
 
 	//C1
-	extract(&mainlist, &extractedlist, shape, 4);
-	convertListEx(&extractedlist, numvalues, tempList);
+	extract(ll, ex, shape, 4);
+	convertListEx(ex, numvalues, tempList);
 	copyList(valueC1, numvalues, tempList);
 
 	//C2
-	extract(&mainlist, &extractedlist, shape, 5);
-	convertListEx(&extractedlist, numvalues, tempList);
+	extract(ll, ex, shape, 5);
+	convertListEx(ex, numvalues, tempList);
 	copyList(valueC2, numvalues, tempList);
 
 	//meanC1, SDC1, meanC2, SDC2, have not been extracted yet.
@@ -53,6 +150,7 @@ void display(int shape)
 	float SDC1 = 321;
 	float meanC2 = 123;
 	float SDC2 = 321;
+
 
 	graphical(21, valueD1, valueD2, valueD3, valueC1, valueC2, numvalues, SDC1, SDC2, meanC1, meanC2);
 
