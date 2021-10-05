@@ -39,7 +39,9 @@ void DataEntry(LinkedList* ll) {
   if (InsertNodeForMainLL(ll, 0, t1, d1, d2, d3) == 0)
     printf("data entry failed.");
 
-  PrintList(ll);  // can comment this out later on!!
+  // can comment this out later on if we dont want!!
+  printf("Current database contains the following: \n");
+  PrintList(ll);
 #ifdef QNX
   delay(1000);
 #else
@@ -49,7 +51,9 @@ void DataEntry(LinkedList* ll) {
 }
 
 void DataQuery(LinkedList* ll) {
-  printf("DataQuery() called. Functionality WIP\n");
+  // can comment this out later on if we dont want!!
+  printf("Current database contains the following: \n");
+  PrintList(ll);
 #ifdef QNX
   delay(1000);
 #else
@@ -65,7 +69,7 @@ void SaveRequest(LinkedList* ll) {
   printf(
       "Enter your desired filename for this database (Hit enter to abort): ");
   line_size = getline(&filename, &len, stdin);
-  printf("You entered %s, which has %zu chars.\n", filename, line_size - 1);
+  // printf("You entered %s, which has %zu chars.\n", filename, line_size - 1);
   if (line_size == 1) {
     printf("Invalid filename entered. Aborting save...\n");
   } else {
@@ -102,17 +106,37 @@ void SaveCurrentDB(char filepath[], LinkedList* ll) {
     }
     cached_node = cached_node->next;
   }
-  printf("Linked List stored in the file successfully\n");
+  printf("Database stored in the file successfully!\n");
   fclose(file);
 }
 
 void LoadRequest(LinkedList* ll) {
-  printf("LoadRequest() called. Functionality WIP\n");
-#ifdef QNX
-  delay(1000);
-#else
-  sleep(1);
-#endif
+  char* filename = NULL;
+  size_t len = 0;
+  ssize_t line_size = 0;
+  char confirmation;
+  printf(
+      "Warning!! This will wipe out your current database. Do you wish to "
+      "proceed? (Y/N)\n");
+  scanf("%c", &confirmation);
+  while (getchar() != '\n')
+    ;  // clear buffer
+  if (confirmation != 'y' && confirmation != 'Y') return;
+
+  printf(
+      "Enter the filename of the database you wish to load (Hit enter to "
+      "abort): ");
+  line_size = getline(&filename, &len, stdin);
+  if (line_size == 1) {
+    printf("Invalid filename entered. Aborting save...\n");
+  } else {
+    FreeMem(ll);
+    ll = LoadDB(filename);
+  }
+  free(filename);
+  // can comment this out later on if we dont want!!
+  printf("Current database contains the following: \n");
+  PrintList(ll);
   printf("==========================================\n\n\n\n");
 }
 
