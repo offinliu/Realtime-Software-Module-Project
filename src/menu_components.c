@@ -52,8 +52,29 @@ void DataEntry(LinkedList* ll) {
 
 void DataQuery(LinkedList* ll) {
   // can comment this out later on if we dont want!!
-  printf("Current database contains the following: \n");
-  PrintList(ll);
+  //printf("Current database contains the following: \n");
+  //PrintList(ll);
+  
+	LinkedListEx extracted_list;
+	extracted_list.head=NULL;
+	extracted_list.tail=NULL;
+	extracted_list.size=0;
+
+	LinkedListEx validity_check;
+	validity_check.head=NULL;
+	validity_check.tail=NULL;
+	validity_check.size=0;
+
+  int t1;
+  printf("Input t1\nInput: ");
+  scanf("%d", &t1);
+  getchar();  // clear buffer
+
+  Extract(ll, &validity_check, t1, 1);
+  if (validity_check.size) Display(t1, ll, &extracted_list);
+  else printf("Item does not exist yet!\n");
+
+
 #ifdef QNX
   delay(1000);
 #else

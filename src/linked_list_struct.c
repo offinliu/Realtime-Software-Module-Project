@@ -90,6 +90,7 @@ int Calculate(LinkedList *ll, int type, float d1, float d2, float d3,
   ll->mean_c2[type_index] = total_c2 / new_unique_count;
   ll->SD_c2[type_index] = sqrt(variance);
   ll->count[type_index] += 1;
+
   return 1;
 }
 

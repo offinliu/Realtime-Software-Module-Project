@@ -2,6 +2,7 @@
 #define MENU_COMPONENTS
 
 #include "linked_list_struct.h"
+#include "graphical.h"
 
 int MainMenu(LinkedList *ll, const char* file_path);
 void PrintMenuHeader();

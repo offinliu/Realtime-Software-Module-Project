@@ -17,9 +17,10 @@ cd ../build
 cc -I ../include/ -c ../app/app_shape_database.c
 cc -I ../include/ -c ../src/menu_components.c
 cc -I ../include/ -c ../src/linked_list_struct.c
+cc -I ../include/ -c ../src/graphical.c
 
 # Linking
-cc app_shape_database.o menu_components.o linked_list_struct.o -o app_main -lm
+cc app_shape_database.o menu_components.o linked_list_struct.o graphical.o -o app_main -lm
 
 # Execution
 ./app_main

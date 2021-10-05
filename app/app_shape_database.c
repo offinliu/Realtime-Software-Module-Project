@@ -8,6 +8,17 @@ int main(int argc, char* argv[]) {
   main_list.tail = 0;
   main_list.size = 0;
 
+  for(int i = 0; i<9; i++)
+  {
+    main_list.SD_c1[i] = 0;
+    main_list.SD_c2[i] = 0;
+    main_list.mean_c1[i] = 0;
+    main_list.mean_c2[i] = 0;
+  }
+
+
+
+
   while (MainMenu(&main_list, file_path));
 
   if (!FreeMem(&main_list)) {
