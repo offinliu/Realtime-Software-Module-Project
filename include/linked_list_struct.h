@@ -3,6 +3,8 @@
 
 #define PI 3.14159265359
 
+#include <stdlib.h>
+#include <stdio.h>
 // #include <stddef.h>
 // const float pi = 3.14159265359;
 
@@ -45,7 +47,7 @@ typedef struct _linkedlistEx {
 
 
 /* ----------------------- helper functions ---------------------------- */
-void Calculate(LinkedList *ll, int type, float d1, float d2, float d3,
+int Calculate(LinkedList *ll, int type, float d1, float d2, float d3,
                float *c1, float *c2);
 int Extract(LinkedList *ll, LinkedListEx *ex, int t1, int selector);
 void PrintList(LinkedList *ll);

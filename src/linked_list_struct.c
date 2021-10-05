@@ -1,16 +1,15 @@
 #include "linked_list_struct.h"
-
-#include <stdio.h>
 #include <math.h>
-#include <stdlib.h>
 
-void Calculate(LinkedList *ll, int type, float d1, float d2, float d3,
+
+int Calculate(LinkedList *ll, int type, float d1, float d2, float d3,
                float *c1, float *c2) {
   int t1, shape, total_c1, total_c2, type_index, old_unique_count,
       new_unique_count;
   float variance, old_mean_c1, old_mean_c2, old_sd_c1, old_sd_c2;
   if (type == 0 || d1 == 0) {
-    perror("Initialising error in Calculation");
+    perror("Initialising error in Calculation\n");
+    return 0;
   }
   switch (type) {
     case 11:  // 2D rectangle
@@ -59,8 +58,8 @@ void Calculate(LinkedList *ll, int type, float d1, float d2, float d3,
       type_index = 8;
       break;
     default:
-      printf("Error: none of type matches pre programmed types\n");
-      break;
+      printf("Error: none of type matches pre-programmed types. Terminating this object entry...\n");
+      return 0;
   }
 
   // calculate mean_c1 and sd_c1
@@ -91,6 +90,7 @@ void Calculate(LinkedList *ll, int type, float d1, float d2, float d3,
   ll->mean_c2[type_index] = total_c2 / new_unique_count;
   ll->SD_c2[type_index] = sqrt(variance);
   ll->count[type_index] += 1;
+  return 1;
 }
 
 int Extract(LinkedList *ll, LinkedListEx *ex, int t1, int selector) {
@@ -100,7 +100,7 @@ int Extract(LinkedList *ll, LinkedListEx *ex, int t1, int selector) {
   ListNode *mov;  // cursor to move down the inserted ll
   int i;          // for error catching in insertnodeEx.
   i = 0;
-  if (ll == NULL) return -1;
+  if (ll == NULL) return 0;
 
   mov = ll->head;
   while (mov != NULL) {
@@ -116,7 +116,7 @@ int Extract(LinkedList *ll, LinkedListEx *ex, int t1, int selector) {
         case 3:  // extract d3
           if (t1 % 10 != 2) {
             printf("No third dimension in 2D shapes. Exiting function....");
-            return -1;
+            return 0;
           }
           i = InsertNodeEx(ex, 0, mov->d3);
           break;
@@ -128,18 +128,18 @@ int Extract(LinkedList *ll, LinkedListEx *ex, int t1, int selector) {
           break;
         default:
           printf("Selector error. Exiting function....");
-          return -1;
+          return 0;
       }
-      if (i != 0) {
+      if (i == 0) {
         printf("Insert node error. Exiting function....");
-        return -1;
+        return 0;
       }
-      if (i != 0) printf("InsertNodeEx fail.\n");
+      if (i == 0) printf("InsertNodeEx fail.\n");
     }
     mov = mov->next;
   }
-  if (i = 0) printf("Extraction complete");
-  return 0;
+  if (i == 1) printf("Extraction complete");
+  return 1;
 }
 
 void PrintList(LinkedList *ll) {
@@ -198,9 +198,9 @@ int InsertNodeForMainLL(LinkedList *ll, int index, int t1, float d1, float d2,
   float c1, c2;
 
   // calculate c1 and c2 values, then update the mean and SD
-  Calculate(ll, t1, d1, d2, d3, &c1, &c2);
+  if (!Calculate(ll, t1, d1, d2, d3, &c1, &c2)) return 0;
 
-  if (ll == NULL || index < 0 || index > ll->size + 1) return -1;
+  if (ll == NULL || index < 0 || index > ll->size + 1) return 0;
 
   // If empty list or inserting first node, need to update head pointer
   if (ll->head == NULL || index == 0) {
@@ -214,7 +214,7 @@ int InsertNodeForMainLL(LinkedList *ll, int index, int t1, float d1, float d2,
     ll->head->c2 = c2;
     ll->head->next = cur;
     ll->size++;
-    return 0;
+    return 1;
   }
 
   // Find the nodes before and at the target position
@@ -230,10 +230,10 @@ int InsertNodeForMainLL(LinkedList *ll, int index, int t1, float d1, float d2,
     pre->next->c2 = c2;
     pre->next->next = cur;
     ll->size++;
-    return 0;
+    return 1;
   }
 
-  return -1;
+  return 0;
 }
 
 // set index to 0 for removing at the start of the list
@@ -241,7 +241,7 @@ int RemoveNode(LinkedList *ll, int index) {
   ListNode *pre, *cur;
 
   // Highest index we can remove is size-1
-  if (ll == NULL || index < 0 || index >= ll->size) return -1;
+  if (ll == NULL || index < 0 || index >= ll->size) return 0;
 
   // If removing first node, need to update head pointer
   if (index == 0) {
@@ -250,28 +250,28 @@ int RemoveNode(LinkedList *ll, int index) {
     ll->head = cur;
     ll->size--;
 
-    return 0;
+    return 1;
   }
 
   // Find the nodes before and after the target position
   // Free the target node and reconnect the links
   if ((pre = FindNode(ll, index - 1)) != NULL) {
-    if (pre->next == NULL) return -1;
+    if (pre->next == NULL) return 0;
 
     cur = pre->next;
     pre->next = cur->next;
     free(cur);
     ll->size--;
-    return 0;
+    return 1;
   }
 
-  return -1;
+  return 0;
 }
 
 int InsertNodeEx(LinkedListEx *ll, int index, int value) {
   ListNodeEx *pre, *cur;
 
-  if (ll == NULL || index < 0 || index > ll->size + 1) return -1;
+  if (ll == NULL || index < 0 || index > ll->size + 1) return 0;
 
   // If empty list or inserting first node, need to update head pointer
   if (ll->head == NULL || index == 0) {
@@ -283,14 +283,14 @@ int InsertNodeEx(LinkedListEx *ll, int index, int value) {
     ll->head->item = value;
     ll->head->next = cur;
     ll->size++;
-    return 0;
+    return 1;
   }
 }
 
 int FreeMem(LinkedList *ll) {
   ListNode *cur, *nex;
-  printf("Freeing memory for main list......");
-  if (ll == NULL) return -1;
+  printf("Freeing memory for main list......\n");
+  if (ll == NULL) return 0;
   cur = ll->head;
   while (cur != NULL) {
     nex = cur;
@@ -298,14 +298,14 @@ int FreeMem(LinkedList *ll) {
     free(nex);
   }
   // free(ll);
-  printf("Memory is free.\n");
-  return 0;
+  printf("Memory is freed successfully.\n");
+  return 1;
 }
 
 int FreeMemEx(LinkedListEx *ll) {
   ListNodeEx *cur, *nex;
   printf("Freeing memory for extracted list......");
-  if (ll == NULL) return -1;
+  if (ll == NULL) return 0;
   cur = ll->head;
   while (cur != NULL) {
     nex = cur;
@@ -314,5 +314,5 @@ int FreeMemEx(LinkedListEx *ll) {
   }
   // free(ll);
   printf("Memory is free.\n");
-  return 0;
+  return 1;
 }

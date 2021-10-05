@@ -10,7 +10,7 @@ void GetUserMenuOption(char* user_input_ptr);
 
 void DataQuery(LinkedList *ll);
 void DataEntry(LinkedList *ll);
-void SaveCurrentDB(char filename[], LinkedList *ll);
-LinkedList* LoadDB(char* filepath[]);
+void SaveCurrentDB(char filepath[], LinkedList *ll);
+LinkedList* LoadDB(char filepath[]);
 
 #endif /* MENU_COMPONENTS */

@@ -27,25 +27,26 @@ void GetUserMenuOption(char* user_input_ptr) {
     ;
 }
 
-void DataEntry(LinkedList *ll) {
+void DataEntry(LinkedList* ll) {
   // printf("DataEntry() called. Functionality WIP\n");
-  // #ifdef QNX
-  //   delay(1000);
-  // #else
-  //   sleep(1);
-  // #endif
-  int t1, d1, d2, d3;
+  int t1;
+  float d1, d2, d3;
   printf("Input t1 d1 d2 d3 in this order\nInput: ");
-	scanf("%d %f %f %f", &t1, &d1, &d2, &d3);
-	getchar(); //clear buffer
-	if (insertNodeForMainLL(&ll, 0, t1, d1, d2, d3) != 0)
-		perror("insert fail.");
+  scanf("%d %f %f %f", &t1, &d1, &d2, &d3);
+  getchar();  // clear buffer
+  if (InsertNodeForMainLL(ll, 0, t1, d1, d2, d3) == 0)
+    printf("data entry failed.");
 
-  PrintList(ll); // can comment this out later on!!
+  PrintList(ll);  // can comment this out later on!!
+#ifdef QNX
+  delay(1000);
+#else
+  sleep(1);
+#endif
   printf("==========================================\n\n\n\n");
 }
 
-void DataQuery(LinkedList *ll) {
+void DataQuery(LinkedList* ll) {
   printf("DataQuery() called. Functionality WIP\n");
 #ifdef QNX
   delay(1000);
@@ -56,11 +57,11 @@ void DataQuery(LinkedList *ll) {
 }
 
 // function to save linked list to a file
-void SaveCurrentDB(char filename[], LinkedList* ll) {
+void SaveCurrentDB(char filepath[], LinkedList* ll) {
   ListNode* cached_node;
 
   FILE* file;
-  file = fopen(filename, "w");
+  file = fopen(filepath, "w");
   if (file == NULL) {
     printf("Couldn't write to file! Skipping save...\n");
     return;
@@ -89,7 +90,7 @@ void SaveCurrentDB(char filename[], LinkedList* ll) {
 }
 
 // function to load linked list from a file
-LinkedList* LoadDB(char* filepath[]) {
+LinkedList* LoadDB(char filepath[]) {
   ListNode* cached_node = (ListNode*)malloc(sizeof(ListNode));
   LinkedList* loaded_db = (LinkedList*)malloc(sizeof(LinkedList));
   ListNode* head;  // points to the first node of the linked list in the file
@@ -149,10 +150,10 @@ int MainMenu(LinkedList* ll, const char* file_path) {
     switch (user_option) {
       case '1':
         DataEntry(ll);
-        break;
+        return 1;
       case '2':
         DataQuery(ll);
-        break;
+        return 1;
       case '3':
         printf("Exiting program now. Goodbye!\n");
         return 0;
