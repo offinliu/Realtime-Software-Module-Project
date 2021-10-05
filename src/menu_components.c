@@ -15,16 +15,18 @@ void PrintMenuOptions() {
   printf("-------------------------------\n");
   printf("1. New Object\n");
   printf("2. Object Query\n");
-  printf("3. Exit Program\n");
+  printf("3. Save Current Database\n");
+  printf("4. Load a Database\n");
+  printf("5. Exit Program\n");
   printf("-------------------------------\n\n");
 }
 
 void GetUserMenuOption(char* user_input_ptr) {
   PrintMenuOptions();
-  printf("Hello user, what would you like to do today? (1/2/3)\nOption: ");
+  printf("Hello user, what would you like to do today? (1/2/3/4/5)\nOption: ");
   scanf("%c", user_input_ptr);
   while (getchar() != '\n')
-    ;
+    ;  // clear buffer
 }
 
 void DataEntry(LinkedList* ll) {
@@ -56,6 +58,21 @@ void DataQuery(LinkedList* ll) {
   printf("==========================================\n\n\n\n");
 }
 
+void SaveRequest(LinkedList* ll) {
+  char* filename = NULL;
+  size_t len = 0;
+  ssize_t line_size = 0;
+  printf(
+      "Enter your desired filename for this database (Hit enter to abort): ");
+  line_size = getline(&filename, &len, stdin);
+  printf("You entered %s, which has %zu chars.\n", filename, line_size - 1);
+  if (line_size == 1) {
+    printf("Invalid filename entered. Aborting save...\n");
+  } else {
+    SaveCurrentDB(filename, ll);
+  }
+  free(filename);
+}
 // function to save linked list to a file
 void SaveCurrentDB(char filepath[], LinkedList* ll) {
   ListNode* cached_node;
@@ -87,6 +104,16 @@ void SaveCurrentDB(char filepath[], LinkedList* ll) {
   }
   printf("Linked List stored in the file successfully\n");
   fclose(file);
+}
+
+void LoadRequest(LinkedList* ll) {
+  printf("LoadRequest() called. Functionality WIP\n");
+#ifdef QNX
+  delay(1000);
+#else
+  sleep(1);
+#endif
+  printf("==========================================\n\n\n\n");
 }
 
 // function to load linked list from a file
@@ -150,13 +177,20 @@ int MainMenu(LinkedList* ll, const char* file_path) {
     switch (user_option) {
       case '1':
         DataEntry(ll);
-        return 1;
+        break;
       case '2':
         DataQuery(ll);
-        return 1;
+        break;
       case '3':
+        SaveRequest(ll);
+        break;
+      case '4':
+        LoadRequest(ll);
+        break;
+      case '5':
         printf("Exiting program now. Goodbye!\n");
         return 0;
+        break;
       default:
         printf("Invalid option! Please try again.\n");
         error = 1;
@@ -164,4 +198,6 @@ int MainMenu(LinkedList* ll, const char* file_path) {
     }
     if (error == 0) break;
   }
+  // everything went smoothly, we can return true here
+  return 1;
 }
