@@ -4,9 +4,10 @@
 #define PI 3.14159265359
 
 // #include <stddef.h>
-
 // const float pi = 3.14159265359;
 
+
+/* ---------- structures for actual data storage ------------- */
 typedef struct _listnode {
   int type;                // shape and 2/3D
   float d1;                // first dimension
@@ -26,34 +27,35 @@ typedef struct _linkedlist {
   float SD_c2[9];
   float mean_c1[9];
   float mean_c2[9];
+  int count[9];
 } LinkedList;
 
-typedef struct _listnodeEx  // for extracting
-{
+
+/* ----------- structures for data extraction ------------- */
+typedef struct _listnodeEx {
   float item;
   struct _listnodeEx *next;
 } ListNodeEx;
 
-typedef struct _linkedlistEx  // for extracting
-{
+typedef struct _linkedlistEx {
   int size;
   ListNodeEx *head;
   ListNodeEx *tail;
 } LinkedListEx;
 
 
-// Helper functions
-void Calculate(int type, float d1, float d2, float d3, float *c1, float *c2);
+/* ----------------------- helper functions ---------------------------- */
+void Calculate(LinkedList *ll, int type, float d1, float d2, float d3,
+               float *c1, float *c2);
 int Extract(LinkedList *ll, LinkedListEx *ex, int t1, int selector);
 void PrintList(LinkedList *ll);
 void PrintListEx(LinkedListEx *ll);
 ListNode *FindNode(LinkedList *ll, int index);
 int InsertNodeForMainLL(LinkedList *ll, int index, int t1, float d1, float d2,
-                        float d3, float c1, float c2);
+                        float d3);
 int RemoveNode(LinkedList *ll, int index);
 int InsertNodeEx(LinkedListEx *ll, int index, int value);
 int FreeMem(LinkedList *ll);
 int FreeMemEx(LinkedListEx *ll);
-
 
 #endif /* LINKED_LIST_STRUCT */

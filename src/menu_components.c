@@ -27,27 +27,120 @@ void GetUserMenuOption(char* user_input_ptr) {
     ;
 }
 
-void DataEntry() {
-  printf("DataEntry() called. Functionality WIP\n");
-  #ifdef QNX
-  delay(1000);
-  #else
-  sleep(1);
-  #endif
+void DataEntry(LinkedList *ll) {
+  // printf("DataEntry() called. Functionality WIP\n");
+  // #ifdef QNX
+  //   delay(1000);
+  // #else
+  //   sleep(1);
+  // #endif
+  int t1, d1, d2, d3;
+  printf("Input t1 d1 d2 d3 in this order\nInput: ");
+	scanf("%d %f %f %f", &t1, &d1, &d2, &d3);
+	getchar(); //clear buffer
+	if (insertNodeForMainLL(&ll, 0, t1, d1, d2, d3) != 0)
+		perror("insert fail.");
+
+  PrintList(ll); // can comment this out later on!!
   printf("==========================================\n\n\n\n");
 }
 
-void DataQuery() {
+void DataQuery(LinkedList *ll) {
   printf("DataQuery() called. Functionality WIP\n");
-  #ifdef QNX
+#ifdef QNX
   delay(1000);
-  #else
+#else
   sleep(1);
-  #endif
+#endif
   printf("==========================================\n\n\n\n");
 }
 
-int MainMenu(LinkedList *ll, const char* file_path) {
+// function to save linked list to a file
+void SaveCurrentDB(char filename[], LinkedList* ll) {
+  ListNode* cached_node;
+
+  FILE* file;
+  file = fopen(filename, "w");
+  if (file == NULL) {
+    printf("Couldn't write to file! Skipping save...\n");
+    return;
+  }
+
+  // check if LinkedList is empty
+  if (ll == NULL) {
+    printf("Linked List is empty! Skipping save...\n");
+    return;
+  }
+
+  // write LinkedList struct to file
+  fwrite(ll, sizeof(LinkedList), 1, file);
+
+  // write all the ListNodes of the linked list to the file
+  cached_node = ll->head;
+  while (cached_node != NULL) {
+    if (fwrite(cached_node, sizeof(ListNode), 1, file) != 1) {
+      printf("Error saving ListNode to file. \n");
+      break;
+    }
+    cached_node = cached_node->next;
+  }
+  printf("Linked List stored in the file successfully\n");
+  fclose(file);
+}
+
+// function to load linked list from a file
+LinkedList* LoadDB(char* filepath[]) {
+  ListNode* cached_node = (ListNode*)malloc(sizeof(ListNode));
+  LinkedList* loaded_db = (LinkedList*)malloc(sizeof(LinkedList));
+  ListNode* head;  // points to the first node of the linked list in the file
+  ListNode* tail;  // points to the last node of the linked list in the file
+  tail = head = NULL;
+
+  // initialise linked list
+  loaded_db->head = NULL;
+  loaded_db->tail = 0;
+  loaded_db->size = 0;
+
+  // try to open file
+  FILE* file;
+  file = fopen(filepath, "r");
+  if (file == NULL) {
+    printf("Couldn't load database. Defaulting to an empty one.\n");
+    return loaded_db;
+  }
+
+  // extract LinkedList struct
+  if (!fread(loaded_db, sizeof(LinkedList), 1, file)) {
+    printf("Couldn't load database. Defaulting to an empty one.\n");
+    return loaded_db;
+  }
+
+  // reading nodes from the file
+  // nodes are read in the same order as they were stored
+  // we are using the data stored in the file to create a new linked list
+  while (fread(cached_node, sizeof(ListNode), 1, file)) {
+    if (head == NULL) {
+      head = tail = (ListNode*)malloc(sizeof(ListNode));
+    } else {
+      tail->next = (ListNode*)malloc(sizeof(ListNode));
+      tail = tail->next;
+    }
+    tail->type = cached_node->type;
+    tail->d1, cached_node->d1;
+    tail->d1, cached_node->d2;
+    tail->d1, cached_node->d3;
+    tail->d1, cached_node->c1;
+    tail->d1, cached_node->c2;
+    tail->next = NULL;
+  }
+
+  fclose(file);
+  loaded_db->head = head;
+  loaded_db->tail = tail;
+  return loaded_db;
+}
+
+int MainMenu(LinkedList* ll, const char* file_path) {
   PrintMenuHeader();
   while (1) {
     char user_option;
@@ -55,10 +148,10 @@ int MainMenu(LinkedList *ll, const char* file_path) {
     int error = 0;
     switch (user_option) {
       case '1':
-        DataEntry();
+        DataEntry(ll);
         break;
       case '2':
-        DataQuery();
+        DataQuery(ll);
         break;
       case '3':
         printf("Exiting program now. Goodbye!\n");

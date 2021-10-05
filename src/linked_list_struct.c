@@ -4,8 +4,11 @@
 #include <math.h>
 #include <stdlib.h>
 
-void Calculate(int type, float d1, float d2, float d3, float *c1, float *c2) {
-  int t1, shape;
+void Calculate(LinkedList *ll, int type, float d1, float d2, float d3,
+               float *c1, float *c2) {
+  int t1, shape, total_c1, total_c2, type_index, old_unique_count,
+      new_unique_count;
+  float variance, old_mean_c1, old_mean_c2, old_sd_c1, old_sd_c2;
   if (type == 0 || d1 == 0) {
     perror("Initialising error in Calculation");
   }
@@ -13,43 +16,81 @@ void Calculate(int type, float d1, float d2, float d3, float *c1, float *c2) {
     case 11:  // 2D rectangle
       *c1 = (d1) * (d2);
       *c2 = 2 * (d1 + d2);
+      type_index = 0;
       break;
     case 21:  // 2D Square
       *c1 = d1 * d1;
       *c2 = 4 * d1;
+      type_index = 1;
       break;
     case 31:  // 2D circle
       *c1 = PI * d1 * d1;
       *c2 = PI * d1 * 2;
+      type_index = 2;
       break;
     case 41:  // 2D right angle triangle
       *c1 = 0.5 * d1 * d2;
       *c2 = d1 + d2 + sqrt(d1 * d1 + d2 * d2);
+      type_index = 3;
       break;
     case 12:  // 3D cude
       *c1 = pow(d1, 3);
       *c2 = 6 * d1 * d1;
+      type_index = 4;
       break;
     case 22:  // 3D block
       *c1 = d1 * d2 * d3;
       *c2 = 2 * (d1 * d2 + d2 * d3 + d1 * d3);
+      type_index = 5;
       break;
     case 32:  // 3D cylinder
       *c1 = PI * d1 * d1 * d2;
       *c2 = 2 * PI * d1 * d1 + 2 * PI * d1 * d2;
+      type_index = 6;
       break;
     case 42:  // 3D sphere
       *c1 = PI * pow(d1, 3);
       *c2 = 4 * PI * d1 * d1;
+      type_index = 7;
       break;
     case 52:  // 3D cone
       *c1 = PI * d1 * d1 * d2 * 1 / 3;
       *c2 = PI * d1 * (d1 + sqrt(d2 * d2 + d1 * d1));
+      type_index = 8;
       break;
     default:
       printf("Error: none of type matches pre programmed types\n");
       break;
   }
+
+  // calculate mean_c1 and sd_c1
+  old_mean_c1 = ll->mean_c1[type_index];
+  old_sd_c1 = ll->SD_c1[type_index];
+  old_unique_count = ll->count[type_index];
+  new_unique_count = old_unique_count + 1;
+  total_c1 = old_mean_c1 * old_unique_count;
+  total_c1 += *c1;
+  variance = (((new_unique_count - 2) * old_sd_c1 +
+               ((*c1 - old_mean_c1) * (*c1 - old_mean_c1))) /
+              (new_unique_count - 1));
+
+  // update with new values
+  ll->mean_c1[type_index] = total_c1 / new_unique_count;
+  ll->SD_c1[type_index] = sqrt(variance);
+
+  // calculate mean_c2 and sd_c2
+  old_mean_c2 = ll->mean_c2[type_index];
+  old_sd_c2 = ll->SD_c2[type_index];
+  total_c2 = old_mean_c2 * old_unique_count;
+  total_c2 += *c2;
+  variance = (((new_unique_count - 2) * old_sd_c2 +
+               ((*c1 - old_mean_c2) * (*c1 - old_mean_c2))) /
+              (new_unique_count - 1));
+
+  // update with new values
+  ll->mean_c2[type_index] = total_c2 / new_unique_count;
+  ll->SD_c2[type_index] = sqrt(variance);
+  ll->count[type_index] += 1;
 }
 
 int Extract(LinkedList *ll, LinkedListEx *ex, int t1, int selector) {
@@ -74,7 +115,7 @@ int Extract(LinkedList *ll, LinkedListEx *ex, int t1, int selector) {
           break;
         case 3:  // extract d3
           if (t1 % 10 != 2) {
-            printf("No thrid dimension in 2D shapes. Exiting function....");
+            printf("No third dimension in 2D shapes. Exiting function....");
             return -1;
           }
           i = InsertNodeEx(ex, 0, mov->d3);
@@ -152,8 +193,12 @@ ListNode *FindNode(LinkedList *ll, int index) {
 
 // set index to 0 for inserting at the start of the list
 int InsertNodeForMainLL(LinkedList *ll, int index, int t1, float d1, float d2,
-                        float d3, float c1, float c2) {
+                        float d3) {
   ListNode *pre, *cur;
+  float c1, c2;
+
+  // calculate c1 and c2 values, then update the mean and SD
+  Calculate(ll, t1, d1, d2, d3, &c1, &c2);
 
   if (ll == NULL || index < 0 || index > ll->size + 1) return -1;
 
@@ -271,4 +316,3 @@ int FreeMemEx(LinkedListEx *ll) {
   printf("Memory is free.\n");
   return 0;
 }
-

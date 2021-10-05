@@ -8,8 +8,9 @@ void PrintMenuHeader();
 void PrintMenuOptions();
 void GetUserMenuOption(char* user_input_ptr);
 
-void DataQuery();
-void DataEntry();
-void SaveCurrentDB();
-void LoadDB(char* filepath[]);
+void DataQuery(LinkedList *ll);
+void DataEntry(LinkedList *ll);
+void SaveCurrentDB(char filename[], LinkedList *ll);
+LinkedList* LoadDB(char* filepath[]);
+
 #endif /* MENU_COMPONENTS */
