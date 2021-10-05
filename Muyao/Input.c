@@ -53,10 +53,11 @@ void printList(LinkedList *ll);
 void printListEx(LinkedListEx *ll);
 ListNode *findNode(LinkedList *ll, int index);
 int insertNodeForMainLL(LinkedList *ll, int index, int t1, float d1, float d2, float d3, float c1, float c2); //int for error catching
-int removeNode(LinkedList *ll, int index);																	  //int for error catching
-int insertNodeEx(LinkedListEx *ll, int value);																  //int for error catching
-int freemem(LinkedList *ll);																				  //int for error catching
-int freememEx(LinkedListEx *ll);																			  //int for error catching
+int removeNode(LinkedList *ll, int index); //int for error catching
+int removeNodeEx(LinkedListEx *ll); //int for error catching
+int insertNodeEx(LinkedListEx *ll, int value); //int for error catching
+int freemem(LinkedList *ll); //int for error catching
+int freememEx(LinkedListEx *ll);  //int for error catching
 
 int main(void)
 { //main() used to simulate input from main menu
@@ -353,6 +354,25 @@ int removeNode(LinkedList *ll, int index) //set index to 0 for removing at the s
 	}
 
 	return -1;
+}
+
+int removeNodeEx(LinkedListEx *ll) //set index to 0 for removing at the start of the list
+{
+
+	ListNodeEx *pre, *cur;
+
+	// Highest index we can remove is size-1
+	if (ll == NULL)
+		return -1;
+
+	// If removing first node, need to update head pointer
+		cur = ll->head->next;
+		free(ll->head);
+		ll->head = cur;
+		ll->size--;
+
+		return 0;
+
 }
 
 int insertNodeEx(LinkedListEx *ll, int value)
