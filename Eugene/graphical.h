@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 void divider(char* typeD2, char* typeD3, int type);
 void drawGraph(float* values, int numvalues);
@@ -74,7 +75,7 @@ void drawGraph(float *values, int numvalues)
 
 
 	int freqsize = maxval - minval;
-	int step = freqsize / scale;
+	int step = ceil((float)freqsize / (float)scale);
 	if (step < 1) step = 1;
 
 
