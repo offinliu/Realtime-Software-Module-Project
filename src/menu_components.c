@@ -21,10 +21,10 @@ void PrintMenuOptions() {
   printf("-------------------------------\n\n");
 }
 
-void GetUserMenuOption(char* user_input_ptr) {
+void GetUserMenuOption(int user_input_ptr) {
   PrintMenuOptions();
   printf("Hello user, what would you like to do today? (1/2/3/4/5)\nOption: ");
-  scanf("%c", user_input_ptr);
+  scanf("%d", user_input_ptr);
   while (getchar() != '\n')
     ;  // clear buffer
 }
