@@ -1,9 +1,8 @@
 #include "linked_list_struct.h"
 #include <math.h>
 
-
-int Calculate(LinkedList *ll, int type, float d1, float d2, float d3,
-               float *c1, float *c2) {
+int Calculate(LinkedList *ll, int type, float d1, float d2, float d3, float *c1,
+              float *c2) {
   int t1, shape, total_c1, total_c2, type_index, old_unique_count,
       new_unique_count;
   float variance, old_mean_c1, old_mean_c2, old_sd_c1, old_sd_c2;
@@ -58,7 +57,9 @@ int Calculate(LinkedList *ll, int type, float d1, float d2, float d3,
       type_index = 8;
       break;
     default:
-      printf("Error: none of type matches pre-programmed types. Terminating this object entry...\n");
+      printf(
+          "Error: none of type matches pre-programmed types. Terminating this "
+          "object entry...\n");
       return 0;
   }
 
@@ -147,6 +148,10 @@ void PrintList(LinkedList *ll) {
   ListNode *cur;
   int i;
   if (ll == 0) return;
+
+  printf("count: %d, mean_c1: %.3f, sd_c1: %.3f, mean_c2: %.3f, sd_c2: %.3f\n",
+         *ll->count, *ll->mean_c1, *ll->SD_c1, *ll->mean_c2, *ll->SD_c2);
+
   cur = ll->head;
 
   if (cur == 0) printf("Empty");

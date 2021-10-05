@@ -94,6 +94,8 @@ void SaveRequest(LinkedList* ll) {
   if (line_size == 1) {
     printf("Invalid filename entered. Aborting save...\n");
   } else {
+    printf("This is what is being saved: \n");
+    PrintList(ll);
     SaveCurrentDB(filename, ll);
   }
   free(filename);
@@ -210,6 +212,7 @@ LinkedList* LoadDB(char filepath[]) {
   fclose(file);
   loaded_db->head = head;
   loaded_db->tail = tail;
+  PrintList(loaded_db);
   return loaded_db;
 }
 
