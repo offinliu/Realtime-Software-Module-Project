@@ -31,14 +31,17 @@ void GetUserMenuOption(char* user_input_ptr) {
 
 void DataEntry(LinkedList* ll) {
   // printf("DataEntry() called. Functionality WIP\n");
-  int t1;
+  int t1 = 0;
   float d1, d2, d3;
-  printf("Please select object type:\n");
-  printf("1. 2D\n");
-  printf("2. 3D\n");
-  printf("Option: \n");
-  scanf("%d %f %f %f", &t1, &d1, &d2, &d3);
-  getchar();  // clear buffer
+
+  t1 = ObjectType();
+
+  printf("Object Selected: ");
+  ShapeChecker(t1,4);
+  d1 = ShapeChecker(t1, 1);
+  d2 = ShapeChecker(t1, 2);
+  d3 = ShapeChecker(t1, 3);
+
   if (InsertNodeForMainLL(ll, 0, t1, d1, d2, d3) == 0)
     printf("data entry failed.");
 
@@ -253,9 +256,9 @@ int MainMenu(LinkedList* ll, const char* file_path) {
   return 1;
 }
 
-void ShapeChecker(int dimensional_type, int shape_type)
+int ShapeChecker(int type, int dimension)
 {
-
+  float input_dimension = 0;
 	char length[] = "Length";
 	char width[] = "Width";
 	char height[] = "Height";
@@ -266,57 +269,55 @@ void ShapeChecker(int dimensional_type, int shape_type)
 	char type_D2[7] = "";
 	char type_D3[7] = "";
 
-  int type = 11;
-
 	switch (type)
 	{
 	case 11: //2D rectangle
-		printf("2D Rectangle\n");
+		if(dimension == 4) printf("2D Rectangle\n");
 		strcpy(type_D1, length);
 		strcpy(type_D2, width);
 		break;
 
 	case 21: //2D Square
-		printf("2D Square\n");
+		if(dimension == 4) printf("2D Square\n");
 		strcpy(type_D1, length);
 		break;
 
 	case 31: //2D circle
-		printf("2D Circle\n");
+		if(dimension == 4) printf("2D Circle\n");
 		strcpy(type_D1, radius);
 		break;
 
 	case 41: //2D right angle triangle
-		printf("2D Triangle\n");
+		if(dimension == 4) printf("2D Triangle\n");
 		strcpy(type_D1, base);
 		strcpy(type_D2, height);
 		break;
 
 	case 12: //3D cude
-		printf("3D Cube\n");
+		if(dimension == 4) printf("3D Cube\n");
 		strcpy(type_D1, length);
 		break;
 
 	case 22: //3D block
-		printf("3D Block\n");
+		if(dimension == 4) printf("3D Block\n");
 		strcpy(type_D1, length);
 		strcpy(type_D2, width);
 		strcpy(type_D3, height);
 		break;
 
 	case 32: //3D cylinder
-		printf("3D Cylinder\n");
+		if(dimension == 4) printf("3D Cylinder\n");
 		strcpy(type_D1, radius);
 		strcpy(type_D2, height);
 		break;
 
 	case 42: //3D sphere
-		printf("3D Sphere\n");
+		if(dimension == 4) printf("3D Sphere\n");
 		strcpy(type_D1, radius);
 		break;
 
 	case 52: //3D cone
-		printf("3D Cone\n");
+		if(dimension == 4) printf("3D Cone\n");
 		strcpy(type_D1, radius);
 		strcpy(type_D2, height);
 		break;
@@ -327,5 +328,85 @@ void ShapeChecker(int dimensional_type, int shape_type)
 
 	}
 
+  if((dimension == 1) && type_D1[0])
+  {
+    input_dimension = 1;
+    return input_dimension;
+  }
+
+  if((dimension == 2) && type_D2[0])
+  {
+    input_dimension = 2;
+    return input_dimension;
+  }
+
+  if((dimension == 3) && type_D3[0])
+  {
+    input_dimension = 3;
+    return input_dimension;
+  }
+
+
+
 }
 
+int ObjectType()
+{
+
+  int t1_1 = 0;
+  int t1_2 = 0;
+  int t1 = 0;
+
+  while(1)
+  {
+    printf("Please select object type:\n");
+    printf("1. 2D\n");
+    printf("2. 3D\n");
+    printf("Option: \n");
+    scanf("%d", &t1_1);
+    getchar();  // clear buffer
+    if((t1_1 == 1) || (t1_1 == 2)) break;
+    else printf("Please choose only 1 or 2!\n\n");
+  }
+
+  printf("\n\n");
+  if(t1_1 == 1) //2D
+  {
+    while(1)
+    {
+      printf("Please select object shape for 2D:\n");
+      printf("1. Rectangle\n");
+      printf("2. Square\n");
+      printf("3. Circle\n");
+      printf("4. Triangle\n");
+      printf("Option: \n");
+      scanf("%d", &t1_2);
+      getchar();  // clear buffer
+      if((t1_2 == 1) || (t1_2 == 2) || (t1_2 == 3) || (t1_2 == 4) ) break;
+      else printf("Please choose only 1, 2, 3 or 4!\n\n");
+    }
+  }
+
+
+  else //2D
+  {
+    while(1)
+    {
+      printf("Please select object shape for 3D:\n");
+      printf("1. Cube\n");
+      printf("2. Block\n");
+      printf("3. Cylinder\n");
+      printf("4. Sphere\n");
+      printf("5. Cone\n");
+      printf("Option: \n");
+      scanf("%d", &t1_2);
+      getchar();  // clear buffer
+      if((t1_2 == 1) || (t1_2 == 2) || (t1_2 == 3) || (t1_2 == 4) || (t1_2 == 5) ) break;
+      else printf("Please choose only 1, 2, 3, 4 or 5!\n\n");
+    }
+  }
+
+
+  t1 = t1_1 + t1_2*10;
+  return t1;
+}

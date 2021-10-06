@@ -18,6 +18,7 @@ void SaveCurrentDB(char filepath[], LinkedList *ll);
 void LoadRequest(LinkedList* ll);
 LinkedList* LoadDB(char filepath[]);
 
-void ShapeChecker(int dimensional_type, int shape_type);
+int ShapeChecker(int type, int dimension);
+int ObjectType();
 
 #endif /* MENU_COMPONENTS */
