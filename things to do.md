@@ -16,6 +16,7 @@ MENU OPTIONS
 		-> Shape	--> t1.2
 		
 	Need to fix SD and mean
+	In extract function, comment out debugging printf lines
 		
 3. Save Current Database
 	*no issue*
