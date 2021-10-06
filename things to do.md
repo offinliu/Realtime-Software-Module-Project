@@ -15,6 +15,8 @@ MENU OPTIONS
 		-> 2D/3D	--> t1.1
 		-> Shape	--> t1.2
 		
+	Need to fix SD and mean
+		
 3. Save Current Database
 	*no issue*
 	
