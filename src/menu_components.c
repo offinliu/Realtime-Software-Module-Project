@@ -33,7 +33,10 @@ void DataEntry(LinkedList* ll) {
   // printf("DataEntry() called. Functionality WIP\n");
   int t1;
   float d1, d2, d3;
-  printf("Input t1 d1 d2 d3 in this order\nInput: ");
+  printf("Please select object type:\n");
+  printf("1. 2D\n");
+  printf("2. 3D\n");
+  printf("Option: \n");
   scanf("%d %f %f %f", &t1, &d1, &d2, &d3);
   getchar();  // clear buffer
   if (InsertNodeForMainLL(ll, 0, t1, d1, d2, d3) == 0)
@@ -249,3 +252,80 @@ int MainMenu(LinkedList* ll, const char* file_path) {
   // everything went smoothly, we can return true here
   return 1;
 }
+
+void ShapeChecker(int dimensional_type, int shape_type)
+{
+
+	char length[] = "Length";
+	char width[] = "Width";
+	char height[] = "Height";
+	char base[] = "Base";
+	char radius[] = "Radius";
+
+	char type_D1[7] = "";
+	char type_D2[7] = "";
+	char type_D3[7] = "";
+
+  int type = 11;
+
+	switch (type)
+	{
+	case 11: //2D rectangle
+		printf("2D Rectangle\n");
+		strcpy(type_D1, length);
+		strcpy(type_D2, width);
+		break;
+
+	case 21: //2D Square
+		printf("2D Square\n");
+		strcpy(type_D1, length);
+		break;
+
+	case 31: //2D circle
+		printf("2D Circle\n");
+		strcpy(type_D1, radius);
+		break;
+
+	case 41: //2D right angle triangle
+		printf("2D Triangle\n");
+		strcpy(type_D1, base);
+		strcpy(type_D2, height);
+		break;
+
+	case 12: //3D cude
+		printf("3D Cube\n");
+		strcpy(type_D1, length);
+		break;
+
+	case 22: //3D block
+		printf("3D Block\n");
+		strcpy(type_D1, length);
+		strcpy(type_D2, width);
+		strcpy(type_D3, height);
+		break;
+
+	case 32: //3D cylinder
+		printf("3D Cylinder\n");
+		strcpy(type_D1, radius);
+		strcpy(type_D2, height);
+		break;
+
+	case 42: //3D sphere
+		printf("3D Sphere\n");
+		strcpy(type_D1, radius);
+		break;
+
+	case 52: //3D cone
+		printf("3D Cone\n");
+		strcpy(type_D1, radius);
+		strcpy(type_D2, height);
+		break;
+
+	default:
+		printf("Error: none of type matches pre programmed types\n");
+		break;
+
+	}
+
+}
+
